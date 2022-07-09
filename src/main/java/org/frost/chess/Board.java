@@ -465,47 +465,57 @@ public class Board {
         this.board[sY][sX] = 0;
     }
 
-    public void finMove(int sX, int sY, int tX, int tY, boolean white){
-        if (!this.checkCheck(sX, sY, tX, tY, white)) {
+    public void finMove(int sX, int sY, int tX, int tY, boolean turn){
+        if(this.inBounds(sX, sY)) {
+            boolean white = (this.getPiece(sX, sY) & 8) == 0;
+            if(turn != white) {
+                return;
+            }
+        } else {
             return;
         }
+
+        if (!this.checkCheck(sX, sY, tX, tY, turn)) {
+            return;
+        }
+
         this.finClearBababooey();
-        if (this.wantToCastle(sX, sY, tX, tY, white) && this.canCastle(tX, white)) {
-            this.castle(tX, white);
-            if (white)
+        if (this.wantToCastle(sX, sY, tX, tY, turn) && this.canCastle(tX, turn)) {
+            this.castle(tX, turn);
+            if (turn)
                 this.CanCastle = false;
-            if (!white)
+            if (!turn)
                 this.CanCastleB = false;
             this.m++;
             return;
         }
-        if (this.checkPiece(sX, sY, tX, tY, white) && this.checkPath(sX, sY, tX, tY, white) && !this.isAlly(tX, tY, white)){
-            if (this.wantsMove2(sX, sY, tX, tY, white)){
-                this.dbleMove(sX, sY, tX, tY, white);
+        if (this.checkPiece(sX, sY, tX, tY, turn) && this.checkPath(sX, sY, tX, tY, turn) && !this.isAlly(tX, tY, turn)){
+            if (this.wantsMove2(sX, sY, tX, tY, turn)){
+                this.dbleMove(sX, sY, tX, tY, turn);
                 this.move(sX, sY, tX, tY);
                 this.m++;
                 return;
             }
-            if (this.canEnPeasant(sX, sY, tX, tY, white)){
+            if (this.canEnPeasant(sX, sY, tX, tY, turn)){
                 this.m++;
                 return;
             }
-            if (this.board[sY][sX] == (white ? 1 : 9)){
-                if (this.finCheckPawn(sX, sY, tX, tY, white)){
+            if (this.board[sY][sX] == (turn ? 1 : 9)){
+                if (this.finCheckPawn(sX, sY, tX, tY, turn)){
                     this.move(sX, sY, tX, tY);
                     this.m++;
                     return;
                 }
                 return;
             }
-            if (this.board[sY][sX] == (white ? 2 : 10)){
+            if (this.board[sY][sX] == (turn ? 2 : 10)){
                 if (sX == 0){
-                    if (white)
+                    if (turn)
                         this.CanCastleR0 = false;
                     else
                         this.CanCastleR0B = false;
                 } else {
-                    if (white)
+                    if (turn)
                         this.CanCastleR7 = false;
                     else
                         this.CanCastleR7B = false;
