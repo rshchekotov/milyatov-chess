@@ -137,12 +137,12 @@ public class Board {
     boolean checkPathK(boolean white, int aX){
         int cY = (white ? this.findKingW() : this.findKingB())[0];
         int cX = (white ? this.findKingW() : this.findKingB())[1] + aX;
-        int pawn = (white ? 8 : 0) + 1;
-        int rook = (white ? 8 : 0) + 2;
-        int Juan = (white ? 8 : 0) + 3;
-        int bishop = (white ? 8 : 0) + 4;
-        int king = (white ? 8 : 0) + 5;
-        int queen = (white ? 8 : 0) + 6;
+        int pawn = (white ? 8 : 0) + ChessPiece.PAWN.getValue();
+        int rook = (white ? 8 : 0) + ChessPiece.ROOK.getValue();
+        int Juan = (white ? 8 : 0) + ChessPiece.KNIGHT.getValue();
+        int bishop = (white ? 8 : 0) + ChessPiece.BISHOP.getValue();
+        int king = (white ? 8 : 0) + ChessPiece.KING.getValue();
+        int queen = (white ? 8 : 0) + ChessPiece.QUEEN.getValue();
 
         int[][] v = {{1, -1},{2, -2}};
         for (int i = 0; i < 2; i++) {
