@@ -475,6 +475,10 @@ public class Board {
             return;
         }
 
+        if (!this.inBounds(tX, tY)) {
+            return;
+        }
+
         if (!this.checkCheck(sX, sY, tX, tY, turn)) {
             return;
         }
@@ -503,11 +507,15 @@ public class Board {
             if (this.board[sY][sX] == (turn ? 1 : 9)){
                 if (this.finCheckPawn(sX, sY, tX, tY, turn)){
                     this.move(sX, sY, tX, tY);
+                    if (this.wantsToPromote(tY, turn)){
+                        this.promote(tX, tY, turn);
+                    }
                     this.m++;
                     return;
                 }
                 return;
             }
+
             if (this.board[sY][sX] == (turn ? 2 : 10)){
                 if (sX == 0){
                     if (turn)
@@ -524,6 +532,13 @@ public class Board {
 
             this.move(sX, sY, tX, tY);
             this.m++;
+        }
+
+        if (this.getPiece(sX, sY) == (turn ? 3 : 11)) {
+            if (this.isEnemy(tX, tY, turn)) {
+                this.move(sX, sY, tX, tY);
+                this.m++;
+            }
         }
     }
 
@@ -550,6 +565,22 @@ public class Board {
         boolean higher = this.board[y][x] >= 9;
         boolean lower = this.board[y][x] < 9 && this.board[y][x] != 0;
         return (white ? lower : higher);
+    }
+
+    boolean isEnemy(int x, int y, boolean white){
+        boolean higher = this.board[y][x] >= 9;
+        boolean lower = this.board[y][x] < 9 && this.board[y][x] != 0;
+        return (white ? higher : lower);
+    }
+
+    public void promote(int tX, int tY, boolean white){
+        int queen = (white ? 6 : 14);
+        this.setBoard(tX, tY, queen);
+    }
+
+    public boolean wantsToPromote(int tY, boolean white){
+        int finRow = (white ? 7 : 0);
+        return tY == finRow;
     }
 
     @Override
