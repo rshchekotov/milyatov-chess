@@ -296,10 +296,10 @@ public class Board {
             switch (this.getPiece(sX, sY)){
                 case 1,9 -> {
                     if ((z == 2) && (white == goingForward)) {
-                        if (sY == (white ? 1 : 6) && dY <= 2) {
+                        if (sY == (white ? 1 : 6) && dY <= 2 && !this.checkOccupied(tX, tY)) {
                             return true;
                         }
-                        if (dY == 1) {
+                        if (dY == 1 && !this.checkOccupied(tX, tY)) {
                             return true;
                         }
                     }
@@ -347,13 +347,23 @@ public class Board {
 
     boolean canCastle(int tX, boolean white){
         boolean canFinCastleK = (white ? this.CanCastle : this.CanCastleB);
+        boolean canFinCastleR = false;
         boolean c = false;
         int x = tX - 3;
         int t = Math.abs(x);
         int s = signum(x);
         int posY = (white ? 0 : 7);
-        if (canFinCastleK) {
-            if (this.checkPath(3, posY, tX, posY, white)){
+        int checkPathX = -1;
+        if (tX == 1){
+            checkPathX = 1;
+            canFinCastleR = (white ? this.CanCastleR0 : this.CanCastleR0B);
+        }
+        if (tX == 5){
+            checkPathX = 6;
+            canFinCastleR = (white ? this.CanCastleR7 : this.CanCastleR7B);
+        }
+        if (canFinCastleK && canFinCastleR) {
+            if (this.checkPath(3, posY, checkPathX, posY, white)){
                 for (int i = 0; i <= t; i++) {
                     if (this.checkPathK(white, i * s)) {
                         c = true;
@@ -363,6 +373,10 @@ public class Board {
                 }
             }
         }
+        if (white)
+            this.CanCastle = false;
+        else
+            this.CanCastleB = false;
         return c;
     }
 
@@ -371,7 +385,7 @@ public class Board {
         int dY = Math.abs(tY - sY);
         int king = (white ? 5 : 13);
         if (this.board[sY][sX] == king){
-            return dX > 1 && dY == 0;
+            return dY == 0 && dX == 2;
         }
         return false;
     }
@@ -382,8 +396,8 @@ public class Board {
         int posR = 0;
         switch (tX) {
             case 1 -> posRn = 2;
-            case 2 ->{
-                posRn = 5;
+            case 5 ->{
+                posRn = 4;
                 posR = 7;
             }
         }
@@ -428,13 +442,16 @@ public class Board {
     }
 
     public boolean canEnPeasant(int sX, int sY, int tX, int tY, boolean white){
+        int ePawn = (white ? 9 : 1);
         if (this.getPiece(sX, sY) == (white ? 1 : 9)){
-            if (this.bababooey[(white ? 1 : 0)][sX] == 1 && tX == sX + 1){
+            if (this.bababooey[(white ? 1 : 0)][sX] == 1 && tX == sX + 1 && !this.isAlly(sX + 1, sY, white)
+            && this.board[sY][sX + 1] == ePawn){
                 this.move(sX, sY, tX, tY);
                 this.board[sY][sX + 1] = 0;
                 return true;
             }
-            if (this.bababooey[(white ? 1 : 0)][sX] == 2 && tX == sX - 1){
+            if (this.bababooey[(white ? 1 : 0)][sX] == 2 && tX == sX - 1 && !this.isAlly(sX - 1, sY, white)
+            && this.board[sY][sX - 1] == ePawn){
                 this.move(sX, sY, tX, tY);
                 this.board[sY][sX - 1] = 0;
                 return true;
@@ -528,6 +545,13 @@ public class Board {
                     else
                         this.CanCastleR7B = false;
                 }
+            }
+
+            if (this.board[sY][sX] == (turn ? 5 : 13)){
+                if (turn)
+                    this.CanCastle = false;
+                else
+                    this.CanCastleB = false;
             }
 
             this.move(sX, sY, tX, tY);
