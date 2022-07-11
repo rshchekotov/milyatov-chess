@@ -373,10 +373,6 @@ public class Board {
                 }
             }
         }
-        if (white)
-            this.CanCastle = false;
-        else
-            this.CanCastleB = false;
         return c;
     }
 
