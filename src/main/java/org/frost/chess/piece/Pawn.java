@@ -1,10 +1,16 @@
 package org.frost.chess.piece;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.frost.chess.Board;
 import org.frost.chess.util.Vector2i;
 
 public class Pawn extends ChessPiece {
+  @Setter
+  @Getter
+  boolean promote = false;
+  @Setter
   boolean enPassant = false;
   boolean dualMove = false;
   Pawn enPassantPawn = null;
@@ -22,6 +28,10 @@ public class Pawn extends ChessPiece {
     if (enPassantPawn != null) {
       getBoard().set(enPassantPawn.getPosition(), null);
       this.enPassantPawn = null;
+    }
+    val y = getPosition().getY();
+    if (y == 0 || y == 7) {
+      this.promote = true;
     }
   }
 
@@ -119,13 +129,5 @@ public class Pawn extends ChessPiece {
     val piece = getBoard().at(destination);
     // TODO: Check for Pins!
     return piece != null;
-  }
-
-  public boolean isEnPassant() {
-    return enPassant;
-  }
-
-  public void resetEnPassant() {
-    this.enPassant = false;
   }
 }

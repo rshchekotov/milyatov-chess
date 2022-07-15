@@ -16,7 +16,6 @@ public abstract class ChessPiece {
   ChessPieceResource resource;
   @NonNull
   Vector2i position;
-  private boolean promoted = false;
 
   public static ChessPiece of(Board board, Vector2i position, int value) {
     val resource = ChessPieceResource.fromValue(value);

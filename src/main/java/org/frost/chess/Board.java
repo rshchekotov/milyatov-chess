@@ -2,6 +2,7 @@ package org.frost.chess;
 
 import lombok.Getter;
 import lombok.val;
+import org.frost.chess.gui.GUITheme;
 import org.frost.chess.piece.ChessPiece;
 import org.frost.chess.piece.ChessPieceColor;
 import org.frost.chess.piece.King;
@@ -44,7 +45,7 @@ public class Board {
 
   private void loadImage() {
     try {
-      val file = "/img/board.png";
+      val file = "/img/%s/board.png".formatted(GUITheme.getCurrentTheme());
       val url = this.getClass().getResource(file);
       if (url == null) {
         // TODO: Change to Log4j
@@ -111,10 +112,11 @@ public class Board {
     if (piece != null) {
       if (piece.canMove(target)) {
         piece.move(target);
+
         for (ChessPiece[] ranks : pieces) {
           for (ChessPiece p : ranks) {
             if (p instanceof Pawn pawn && p != piece) {
-              pawn.resetEnPassant();
+              pawn.setEnPassant(false);
             }
           }
         }

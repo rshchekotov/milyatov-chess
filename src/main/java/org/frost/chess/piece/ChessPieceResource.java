@@ -1,6 +1,7 @@
 package org.frost.chess.piece;
 
 import lombok.Getter;
+import org.frost.chess.gui.GUITheme;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -55,7 +56,7 @@ public enum ChessPieceResource {
 
   private void loadImage() {
     try {
-      String file = "/img/" + this.name + ".png";
+      String file = "/img/%s/%s.png".formatted(GUITheme.getCurrentTheme(), this.name);
       URL url = this.getClass().getResource(file);
       if (url == null) {
         System.err.printf("URL <%s> is null!\n", file);
