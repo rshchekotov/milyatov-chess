@@ -1,9 +1,7 @@
 package org.frost.chess.piece;
 
+import lombok.val;
 import org.frost.chess.Board;
-import org.frost.chess.ChessPiece;
-import org.frost.chess.ChessPieceResource;
-import org.frost.chess.PieceColor;
 import org.frost.chess.util.Vector2i;
 
 public class Pawn extends ChessPiece {
@@ -35,11 +33,11 @@ public class Pawn extends ChessPiece {
 
     enPassantPawn = null;
     dualMove = false;
-    Vector2i movementVector = destination.sub(getPosition());
+    val movementVector = destination.sub(getPosition());
 
     /* General Pawn Handling */
-    int stride = movementVector.rectilinearLength();
-    int factor = this.getResource().getPieceColor() == PieceColor.WHITE ? 1 : -1;
+    val stride = movementVector.rectilinearLength();
+    val factor = this.getResource().getChessPieceColor() == ChessPieceColor.WHITE ? 1 : -1;
     if (stride > 2) {
       return false;
     }
@@ -83,7 +81,7 @@ public class Pawn extends ChessPiece {
       }
 
       // Checks if there is a piece in the way
-      Vector2i mid = new Vector2i(this.getPosition().getX(),
+      val mid = new Vector2i(this.getPosition().getX(),
           this.getPosition().getY() + factor);
       if (getBoard().at(mid) != null) {
         return true;
@@ -109,8 +107,8 @@ public class Pawn extends ChessPiece {
       return false;
     }
     // Check for En Passant
-    Vector2i enPassantPosition = new Vector2i(destination.getX(), getPosition().getY());
-    ChessPiece enPassantPiece = getBoard().at(enPassantPosition);
+    val enPassantPosition = new Vector2i(destination.getX(), getPosition().getY());
+    val enPassantPiece = getBoard().at(enPassantPosition);
     if (enPassantPiece instanceof Pawn pawn) {
       if (!this.isAlly(pawn) && pawn.enPassant) {
         // TODO: Check for Pins!
@@ -118,7 +116,7 @@ public class Pawn extends ChessPiece {
         return true;
       }
     }
-    ChessPiece piece = getBoard().at(destination);
+    val piece = getBoard().at(destination);
     // TODO: Check for Pins!
     return piece != null;
   }

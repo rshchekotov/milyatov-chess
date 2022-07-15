@@ -1,4 +1,4 @@
-package org.frost.chess;
+package org.frost.chess.piece;
 
 import lombok.Getter;
 
@@ -10,28 +10,28 @@ import java.util.Objects;
 
 @Getter
 public enum ChessPieceResource {
-  BLACK_PAWN("pawn_black", PieceColor.BLACK, 1),
-  BLACK_ROOK("rook_black", PieceColor.BLACK, 2),
-  BLACK_KNIGHT("knight_black", PieceColor.BLACK, 3),
-  BLACK_BISHOP("bishop_black", PieceColor.BLACK, 4),
-  BLACK_KING("king_black", PieceColor.BLACK, 5),
-  BLACK_QUEEN("queen_black", PieceColor.BLACK, 6),
-  WHITE_PAWN("pawn_white", PieceColor.WHITE, 1),
-  WHITE_ROOK("rook_white", PieceColor.WHITE, 2),
-  WHITE_KNIGHT("knight_white", PieceColor.WHITE, 3),
-  WHITE_BISHOP("bishop_white", PieceColor.WHITE, 4),
-  WHITE_KING("king_white", PieceColor.WHITE, 5),
-  WHITE_QUEEN("queen_white", PieceColor.WHITE, 6);
+  BLACK_PAWN("pawn_black", ChessPieceColor.BLACK, 1),
+  BLACK_ROOK("rook_black", ChessPieceColor.BLACK, 2),
+  BLACK_KNIGHT("knight_black", ChessPieceColor.BLACK, 3),
+  BLACK_BISHOP("bishop_black", ChessPieceColor.BLACK, 4),
+  BLACK_KING("king_black", ChessPieceColor.BLACK, 5),
+  BLACK_QUEEN("queen_black", ChessPieceColor.BLACK, 6),
+  WHITE_PAWN("pawn_white", ChessPieceColor.WHITE, 1),
+  WHITE_ROOK("rook_white", ChessPieceColor.WHITE, 2),
+  WHITE_KNIGHT("knight_white", ChessPieceColor.WHITE, 3),
+  WHITE_BISHOP("bishop_white", ChessPieceColor.WHITE, 4),
+  WHITE_KING("king_white", ChessPieceColor.WHITE, 5),
+  WHITE_QUEEN("queen_white", ChessPieceColor.WHITE, 6);
 
-  final String name;
-  final PieceColor pieceColor;
-  final int value;
-  BufferedImage image;
+  private final String name;
+  private final ChessPieceColor chessPieceColor;
+  private final int value;
+  private BufferedImage image;
 
-  ChessPieceResource(String name, PieceColor pieceColor, int value) {
+  ChessPieceResource(String name, ChessPieceColor chessPieceColor, int value) {
     this.name = name;
-    this.pieceColor = pieceColor;
-    this.value = (this.pieceColor == PieceColor.BLACK ? 8 : 0) + value;
+    this.chessPieceColor = chessPieceColor;
+    this.value = (this.chessPieceColor == ChessPieceColor.BLACK ? 8 : 0) + value;
     this.loadImage();
   }
 

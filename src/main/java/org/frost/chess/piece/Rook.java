@@ -1,8 +1,7 @@
 package org.frost.chess.piece;
 
+import lombok.val;
 import org.frost.chess.Board;
-import org.frost.chess.ChessPiece;
-import org.frost.chess.ChessPieceResource;
 import org.frost.chess.util.Vector2i;
 
 public class Rook extends ChessPiece {
@@ -19,21 +18,21 @@ public class Rook extends ChessPiece {
       return false;
     }
 
-    Vector2i movementVector = destination.sub(getPosition());
+    val movementVector = destination.sub(getPosition());
     // Checks if the movement is a straight line
     if (movementVector.isNonOrthogonal()) {
       return false;
     }
     // TODO: Check for Pins
 
-    boolean canMove = getBoard().checkPath(getPosition(), destination);
-    // Disable Castling
-    King king = switch (getResource().getPieceColor()) {
-      case WHITE -> getBoard().getWhiteKing();
-      case BLACK -> getBoard().getBlackKing();
-    };
+    val canMove = getBoard().checkPath(getPosition(), destination);
     if (canMove) {
-      int pos = originalPosition.getX() == 0 ? 0 : 1;
+      // Disable Castling
+      val pos = originalPosition.getX() == 0 ? 0 : 1;
+      val king = switch (getResource().getChessPieceColor()) {
+        case WHITE -> getBoard().getWhiteKing();
+        case BLACK -> getBoard().getBlackKing();
+      };
       king.castling[pos] = false;
     }
     return canMove;

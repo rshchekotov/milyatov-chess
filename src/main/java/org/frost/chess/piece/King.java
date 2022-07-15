@@ -1,8 +1,7 @@
 package org.frost.chess.piece;
 
+import lombok.val;
 import org.frost.chess.Board;
-import org.frost.chess.ChessPiece;
-import org.frost.chess.ChessPieceResource;
 import org.frost.chess.util.Vector2i;
 
 public class King extends ChessPiece {
@@ -35,13 +34,12 @@ public class King extends ChessPiece {
       return false;
     }
 
-    Vector2i movementVector = destination.sub(getPosition());
+    val movementVector = destination.sub(getPosition());
     int dx = movementVector.getX();
     int dy = movementVector.getY();
 
     // Check for Castling
     if (dy == 0 && (dx == -2 || dx == 3)) {
-      Rook rook;
       int index = dx == -2 ? 0 : 1;
       int[] rookPosition = {0, 7};
 
@@ -49,7 +47,7 @@ public class King extends ChessPiece {
         return false;
       } else {
         // TODO: Check for Checks & Pins
-        rook = (Rook) getBoard().at(new Vector2i(rookPosition[index], getPosition().getY()));
+        val rook = (Rook) getBoard().at(new Vector2i(rookPosition[index], getPosition().getY()));
         boolean canCastle = getBoard().checkPath(getPosition(), rook.getPosition());
         if (canCastle) {
           castleRook = rook;

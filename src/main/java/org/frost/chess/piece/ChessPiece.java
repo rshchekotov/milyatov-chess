@@ -1,20 +1,26 @@
-package org.frost.chess;
+package org.frost.chess.piece;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.frost.chess.piece.*;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.val;
+import org.frost.chess.Board;
 import org.frost.chess.util.Vector2i;
 
-@AllArgsConstructor
 @Data
+@RequiredArgsConstructor
 public abstract class ChessPiece {
+  @NonNull
   Board board;
+  @NonNull
   ChessPieceResource resource;
+  @NonNull
   Vector2i position;
+  private boolean promoted = false;
 
-  public static ChessPiece create(Board board, Vector2i position, int value) {
-    ChessPieceResource resource = ChessPieceResource.fromValue(value);
-    return switch (resource.value & 7) {
+  public static ChessPiece of(Board board, Vector2i position, int value) {
+    val resource = ChessPieceResource.fromValue(value);
+    return switch (resource.getValue() & 7) {
       case 1 -> new Pawn(board, resource, position);
       case 2 -> new Rook(board, resource, position);
       case 3 -> new Knight(board, resource, position);
@@ -30,12 +36,12 @@ public abstract class ChessPiece {
       return false;
     }
 
-    if (board.getTurnColor() != this.getResource().getPieceColor()) {
+    if (board.getTurnColor() != this.getResource().getChessPieceColor()) {
       return false;
     }
 
-    ChessPiece piece = board.at(destination);
-    if (piece != null && piece.getResource().getPieceColor() == this.getResource().getPieceColor()) {
+    val piece = board.at(destination);
+    if (piece != null && piece.getResource().getChessPieceColor() == this.getResource().getChessPieceColor()) {
       return false;
     }
 
@@ -49,6 +55,6 @@ public abstract class ChessPiece {
   }
 
   public boolean isAlly(ChessPiece piece) {
-    return piece.getResource().getPieceColor() == this.getResource().getPieceColor();
+    return piece.getResource().getChessPieceColor() == this.getResource().getChessPieceColor();
   }
 }

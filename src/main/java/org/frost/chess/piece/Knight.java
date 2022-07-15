@@ -1,8 +1,7 @@
 package org.frost.chess.piece;
 
+import lombok.val;
 import org.frost.chess.Board;
-import org.frost.chess.ChessPiece;
-import org.frost.chess.ChessPieceResource;
 import org.frost.chess.util.Vector2i;
 
 public class Knight extends ChessPiece {
@@ -16,10 +15,10 @@ public class Knight extends ChessPiece {
       return false;
     }
 
-    Vector2i movementVector = destination.sub(getPosition());
+    val movementVector = destination.sub(getPosition());
     // Checks for Knight-Jumps
-    int dx = Math.abs(movementVector.getX());
-    int dy = Math.abs(movementVector.getY());
+    val dx = Math.abs(movementVector.getX());
+    val dy = Math.abs(movementVector.getY());
     // TODO: Check for Pins
     return (dx == 2 && dy == 1) || (dx == 1 && dy == 2);
   }

@@ -1,8 +1,7 @@
 package org.frost.chess.piece;
 
+import lombok.val;
 import org.frost.chess.Board;
-import org.frost.chess.ChessPiece;
-import org.frost.chess.ChessPieceResource;
 import org.frost.chess.util.Vector2i;
 
 public class Bishop extends ChessPiece {
@@ -16,7 +15,7 @@ public class Bishop extends ChessPiece {
       return false;
     }
 
-    Vector2i movementVector = destination.sub(getPosition());
+    val movementVector = destination.sub(getPosition());
     // Checks if the movement is a straight line
     if (!movementVector.isDiagonal()) {
       return false;
