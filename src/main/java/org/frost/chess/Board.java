@@ -7,6 +7,7 @@ import org.frost.chess.piece.ChessPiece;
 import org.frost.chess.piece.ChessPieceColor;
 import org.frost.chess.piece.King;
 import org.frost.chess.piece.Pawn;
+import org.frost.chess.util.ChessUtil;
 import org.frost.chess.util.Vector2i;
 
 import javax.imageio.ImageIO;
@@ -58,8 +59,8 @@ public class Board {
   }
 
   public boolean isInBounds(Vector2i position) {
-    return position.getX() >= 0 && position.getX() < 8 &&
-        position.getY() >= 0 && position.getY() < 8;
+    return ChessUtil.inRange(position.getX(), 0, 7) &&
+        ChessUtil.inRange(position.getY(), 0, 7);
   }
 
   public boolean checkPath(Vector2i start, Vector2i end) {

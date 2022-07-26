@@ -1,9 +1,12 @@
 package org.frost.chess.gui;
 
 import lombok.val;
+import org.frost.chess.Board;
+import org.frost.chess.piece.ChessPiece;
 import org.frost.chess.piece.ChessPieceColor;
 import org.frost.chess.piece.ChessPieceResource;
 import org.frost.chess.piece.Pawn;
+import org.frost.chess.util.ChessUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,7 +50,17 @@ public class PromotionDialogue extends JFrame {
     this.addMouseListener(new MouseAdapter() {
       @Override
       public void mousePressed(MouseEvent e) {
-        // TODO: Handle Button Animation
+        val scaledX = (e.getX() - offset) / (gui.getPieceSize() + padding);
+        val scaledY = (e.getY() - offset) / (gui.getPieceSize());
+        if(ChessUtil.inRange(scaledX, 0, selectables.length) &&
+          scaledY == 0) {
+          val selected = selectables[scaledX];
+          val value = selected.getValue() + selected.getChessPieceColor().getValue();
+          val board = gui.getBoard();
+          board.set(pawn.getPosition(), ChessPiece.of(board, pawn.getPosition(), value));
+          gui.setPromotionDialogue(null);
+          dispose();
+        }
       }
 
       @Override
@@ -60,7 +73,7 @@ public class PromotionDialogue extends JFrame {
 
   @Override
   public void paint(Graphics g) {
-    Graphics2D g2d = (Graphics2D) g;
+    val g2d = (Graphics2D) g;
     g2d.translate(this.offset, this.offset);
 
     // Draw Pieces

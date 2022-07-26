@@ -1,12 +1,12 @@
 package org.frost.chess.piece;
 
 import lombok.Getter;
+import lombok.val;
 import org.frost.chess.gui.GUITheme;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
 
 @Getter
@@ -56,9 +56,10 @@ public enum ChessPieceResource {
 
   private void loadImage() {
     try {
-      String file = "/img/%s/%s.png".formatted(GUITheme.getCurrentTheme(), this.name);
-      URL url = this.getClass().getResource(file);
+      val file = "/img/%s/%s.png".formatted(GUITheme.getCurrentTheme(), this.name);
+      val url = this.getClass().getResource(file);
       if (url == null) {
+        // TODO: Replace by Log4j
         System.err.printf("URL <%s> is null!\n", file);
       }
       this.image = ImageIO.read(Objects.requireNonNull(url));
